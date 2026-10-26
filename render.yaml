@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ultra-elite-dashboard
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node host.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: SESSION_SECRET
+        generateValue: true
+    healthCheckPath: /
+    autoDeploy: true
