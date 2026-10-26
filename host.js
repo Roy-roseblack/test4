@@ -183,7 +183,34 @@ app.post("/api/signup", async (req, res) => {
                 }
                 return res.status(500).json({ error: "Internal server error", code: "DB_ERROR" });
             }
-            res.json({ success: true, userId: this.lastID, code: "USER_CREATED" });
+
+            // Automatically create a player profile for the new user
+            const userKey = sanitizedUsername.toLowerCase().split(' ')[0];
+            const playerId = `${Math.random().toString(36).substr(2, 3)}-${sanitizedUsername.toUpperCase().substr(0, 2)}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+
+            db.run(
+                `INSERT INTO players (username_key, name, player_id, clan, theme_color, total_points, current_points, saved_points, review_memorization, improvements)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    userKey,
+                    sanitizedUsername,
+                    playerId,
+                    'Solo Player',
+                    '#3b82f6',
+                    0,
+                    0,
+                    0,
+                    '0%',
+                    JSON.stringify({ total: '0%', current: '0%', saved: '0%', mem: '0%' })
+                ],
+                function(playerErr) {
+                    if (playerErr) {
+                        console.error("Database error creating player profile:", playerErr);
+                        // Don't fail signup if player profile creation fails
+                    }
+                    res.json({ success: true, userId: this.lastID, code: "USER_CREATED" });
+                }
+            );
         }
     );
 });
