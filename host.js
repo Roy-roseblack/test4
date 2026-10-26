@@ -81,7 +81,20 @@ ensureIndexHtml();
 
 app.use(express.json({ limit: '10mb', strict: false }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve static files with proper MIME types and cache headers
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: '1d',
+    etag: false
+}));
+
+// Explicitly set MIME types for CSS and JS
+app.get(/\.css$/, (req, res) => {
+    res.type('text/css');
+});
+app.get(/\.js$/, (req, res) => {
+    res.type('application/javascript');
+});
 
 app.use(session({
     secret: sessionSecret,
