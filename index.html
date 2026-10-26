@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ULTRA ELITE | Pro Player Stats</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="bg-canvas"></div>
+    <div class="orb orb-1" id="glow1"></div>
+    <div class="orb orb-2" id="glow2"></div>
+
+    <div id="auth-overlay">
+        <div id="login-box" class="auth-card">
+            <h2>Welcome Back</h2>
+            <p>Access your elite statistics</p>
+            <div class="input-group">
+                <input type="text" id="login-user" class="auth-input" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <input type="password" id="login-pass" class="auth-input" placeholder="Password">
+            </div>
+            <button class="auth-btn" onclick="handleLogin()">Login to Elite</button>
+            <div class="auth-switch" onclick="toggleAuth(true)">Don't have an account? <span>Sign up</span></div>
+        </div>
+        <div id="signup-box" class="auth-card" style="display: none;">
+            <h2>Join the Elite</h2>
+            <p>Create your secure profile</p>
+            <div class="input-group">
+                <input type="text" id="sign-user" class="auth-input" placeholder="Choose Username">
+            </div>
+            <div class="input-group">
+                <input type="password" id="sign-pass" class="auth-input" placeholder="Choose Password">
+            </div>
+            <button class="auth-btn" onclick="handleSignup()">Create Account</button>
+            <div class="auth-switch" onclick="toggleAuth(false)">Already have an account? <span>Login</span></div>
+        </div>
+    </div>
+
+    <div id="success-overlay">
+        <div class="success-circle">✓</div>
+        <div class="success-text" id="success-msg">Access Granted</div>
+    </div>
+
+    <div class="profile-corner">
+        <div class="profile-avatar" id="avatarInitial"></div>
+        <div class="profile-info">
+            <div class="profile-name" id="profName"></div>
+            <div class="profile-id" id="profId"></div>
+            <div class="profile-clan" id="profClan" onclick="openClanModal()"></div>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div class="dashboard" id="mainDashboard">
+        <div class="header">
+            <h1 class="player-name" id="playerName"></h1>
+            <div class="clan-badge" id="playerClan" onclick="openClanModal()"></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card total-points">
+                <div class="stat-label">Total Points</div>
+                <div class="stat-value" id="totalPoints"></div>
+                <div class="improvement-tag" id="totalImprovement"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current</div>
+                <div class="stat-value" id="currentPoints"></div>
+                <div class="improvement-tag" id="currentImprovement"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Saved</div>
+                <div class="stat-value" id="savedPoints"></div>
+                <div class="improvement-tag" id="savedImprovement"></div>
+            </div>
+            <div class="stat-card" style="grid-column: span 2;">
+                <div class="stat-label">Review Memorization</div>
+                <div class="stat-value" id="reviewMem"></div>
+                <div class="improvement-tag" id="memImprovement"></div>
+            </div>
+        </div>
+        <button class="leader-btn" id="leaderBtn" onclick="openCommandCenter()">Open Command Center</button>
+    </div>
+
+    <div class="modal-overlay" id="clanModal">
+        <div class="modal" id="clanModalContent">
+            <button class="close-btn" onclick="closeClanModal()">×</button>
+            <div class="modal-header">
+                <h2 id="modalClanName">Clan Name</h2>
+            </div>
+            <div class="clan-growth" id="clanImprovement">+0% Clan Growth This Month</div>
+            <div class="member-list" id="memberList"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="commandModal">
+        <div class="modal command-modal" id="commandModalContent">
+            <button class="close-btn" onclick="closeCommandCenter()">×</button>
+            <div class="modal-header">
+                <h2 style="color: var(--primary);">Clan Command Center</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Elite Team Performance Analytics</p>
+            </div>
+            <div class="clan-stats-banner">
+                <div class="stat-mini-card">
+                    <div class="stat-mini-label">Global Power</div>
+                    <div class="stat-mini-value" id="globalPower">0</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-label">Avg. Member</div>
+                    <div class="stat-mini-value" id="avgPower">0</div>
+                </div>
+                <div class="stat-mini-card">
+                    <div class="stat-mini-label">Active Members</div>
+                    <div class="stat-mini-value" id="activeMembers">0</div>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="team-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;">Member</th>
+                            <th style="width: 15%;">Role</th>
+                            <th style="width: 35%;">Detailed Stats</th>
+                            <th style="width: 25%;">Efficiency</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teamTbody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

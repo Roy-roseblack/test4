@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Elite Secure Server",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["host.js"],
+      "port": 3000
+    }
+  ]
+}
